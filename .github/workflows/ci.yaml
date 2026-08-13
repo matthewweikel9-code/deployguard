@@ -14,7 +14,7 @@ permissions:
 jobs:
   test-build:
     name: Test and Build
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
