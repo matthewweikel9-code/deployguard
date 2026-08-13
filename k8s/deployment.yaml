@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: deployguard-api
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: deployguard-api
+
+  template:
+    metadata:
+      labels:
+        app: deployguard-api
+
+    spec:
+      containers:
+        - name: deployguard-api
+          image: deployguard-api:v1
+          imagePullPolicy: IfNotPresent
+
+          ports:
+          - containerPort: 8080
+          
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            

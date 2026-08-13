@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# GO
+*.exe
+*.test
+*.out
+deployguard-api
+
+# Environmnet / secrets
+.env
+.env.*
+!.env.example
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# IDE
+.vscode/
+.idea/
