@@ -1,0 +1,41 @@
+name: Deployguard CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test-build:
+    name: Test and Build
+    runs-on: unbuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Verify formatting
+        run: |
+          test -z "$(gofmt -l .)"
+
+      - name: Run tests
+        run: go test -v ./...
+
+      - name: Build Go application
+        run: go build ./...
+
+      - name: Builder Docker image
+        run: docker build -t deployguard-api:${{ github.sha }} .
+            
