@@ -38,3 +38,34 @@ jobs:
 
       - name: Builder Docker image
         run: docker build -t deployguard-api:${{ github.sha }} .
+
+  publish-image:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    needs: test-build
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/matthewweikel9-code/deployguard:latest
+            ghcr.io/matthewweikel9-code/deployguard:${{ github.sha }}
