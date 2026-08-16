@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: deployguard-api
-          image: deployguard-api:v1
+          image: ghcr.io/matthewweikel9-code/deployguard:52dd1c603d179a2fc48448e772c8d2dc24ba0765
           imagePullPolicy: IfNotPresent
 
           ports:
@@ -38,4 +38,3 @@ spec:
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 10
-            
